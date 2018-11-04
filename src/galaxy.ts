@@ -13,7 +13,7 @@ const systemDiameter: number = 1;
 export const addSystems: (scene: BABYLON.Scene) => void = function(scene: BABYLON.Scene) {
   // TODO: Add spheres where systems would be
   // For now - random positions are sufficient
-  const sytemSphere: BABYLON.Mesh = BABYLON.Mesh.CreateSphere(`system-${name}`, systemSegments, systemDiameter, scene, false, BABYLON.Mesh.FRONTSIDE);
+  const sytemSphere: BABYLON.Mesh = BABYLON.Mesh.CreateSphere('system', systemSegments, systemDiameter, scene, false, BABYLON.Mesh.FRONTSIDE);
   for (let i = 0; i < systemCount; i++) {
     // Ref:
     // https://programming.guide/random-point-within-circle.html
