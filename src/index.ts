@@ -28,11 +28,16 @@ const engine: BABYLON.Engine = new BABYLON.Engine(canvas, true, engineOptions);
 const createScene = function(): BABYLON.Scene {
   const scene: BABYLON.Scene = new BABYLON.Scene(engine);
 
-  const camera: BABYLON.FreeCamera = new BABYLON.FreeCamera('camera1', new BABYLON.Vector3(0, 5, -10), scene);
+  const camera = new BABYLON.ArcRotateCamera('camera1', 0, 0, 0, new BABYLON.Vector3(0, 5, -10), scene);
+  // const camera: BABYLON.FreeCamera = new BABYLON.FreeCamera('camera1', new BABYLON.Vector3(0, 5, -10), scene);
   camera.setTarget(BABYLON.Vector3.Zero());
   camera.attachControl(canvas, false);
 
-  addExamplesToScene(scene);
+  // Always attach the light for now
+  const light: BABYLON.Light = new BABYLON.HemisphericLight('light1', new BABYLON.Vector3(0, 1, 0), scene);
+
+  //   addExamplesToScene(scene);
+  addSystems(scene);
 
   return scene;
 };
