@@ -13,5 +13,8 @@
   },
   "scripts": {
     "start": "node fuse.js"
+  },
+  "dependencies": {
+    "babylonjs": "^3.3.0"
   }
 }
