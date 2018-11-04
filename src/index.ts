@@ -37,7 +37,8 @@ const createScene = function(): BABYLON.Scene {
 const scene: BABYLON.Scene = createScene();
 
 // Run the optimiser to try and maintain a good FPS count
-// BABYLON.SceneOptimizer.OptimizeAsync(scene);
+// TODO: See if freezing issue when this is enabled can be solved
+BABYLON.SceneOptimizer.OptimizeAsync(scene);
 
 // TODO: Refactor into util file
 const showFps = () => {

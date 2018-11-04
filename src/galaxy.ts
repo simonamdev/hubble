@@ -6,7 +6,7 @@ const galaxyMaxX: number = 100;
 const galaxyMaxY: number = 10;
 const galaxyMaxZ: number = 100;
 
-const systemCount: number = 3000;
+const systemCount: number = 10000;
 const systemSegments = 8;
 const systemDiameter: number = 1;
 
