@@ -6,18 +6,10 @@ import { addExamplesToScene } from './example';
 
 const canvasId: string = '3d-map-canvas';
 
-// Destroy any already present canvases (due to HMR)
-const elements = document.body.getElementsByTagName('canvas');
-for (let i = 0; i < elements.length; i++) {
-  elements[i].remove();
-}
-
 // Create the canvas object
-const canvas = document.createElement('canvas');
-canvas.id = canvasId;
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-document.body.appendChild(canvas);
+const canvas = document.getElementById(canvasId) as HTMLCanvasElement;
+canvas.style.width = `100%`;
+canvas.style.height = `100%`;
 
 const engineOptions: BABYLON.EngineOptions = {
   preserveDrawingBuffer: true,
@@ -45,15 +37,26 @@ const createScene = function(): BABYLON.Scene {
 const scene: BABYLON.Scene = createScene();
 
 // Run the optimiser to try and maintain a good FPS count
-BABYLON.SceneOptimizer.OptimizeAsync(scene);
+// BABYLON.SceneOptimizer.OptimizeAsync(scene);
+
+// TODO: Refactor into util file
+const showFps = () => {
+  const fpsElement = document.getElementById('fps-counter');
+  fpsElement.innerHTML = `FPS: ${engine.getFps().toFixed()}`;
+};
 
 // Render loop
+console.log('Done');
 engine.runRenderLoop(() => {
   scene.render();
+  // TODO: Do not show FPS every render frame - it is wasteful
+  showFps();
 });
 
 // Set an event handler for canvas/window resize
 
 window.addEventListener('resize', () => {
+  console.log('Resizing');
+
   engine.resize();
 });

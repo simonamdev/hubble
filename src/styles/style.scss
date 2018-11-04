@@ -4,3 +4,11 @@ body {
   height: 100%;
   overflow: hidden;
 }
+
+#fps-counter {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  background-color: grey;
+  color: white;
+}
