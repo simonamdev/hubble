@@ -1,0 +1,14 @@
+{
+  "name": "hubble",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "repository": "https://github.com/purrcat259/hubble.git",
+  "author": "Simon AM <simon@agius-muscat.net>",
+  "license": "MIT",
+  "devDependencies": {
+    "fuse-box": "^3.6.0",
+    "typescript": "^3.1.6",
+    "uglify-es": "^3.3.9",
+    "uglify-js": "^3.4.9"
+  }
+}
