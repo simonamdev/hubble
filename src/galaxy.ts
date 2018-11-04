@@ -5,7 +5,7 @@ const galaxyMaxX: number = 100;
 const galaxyMaxY: number = 10;
 const galaxyMaxZ: number = 100;
 
-const systemCount: number = 1000;
+const systemCount: number = 2000;
 
 export const addSystems: (scene: BABYLON.Scene) => void = function(scene: BABYLON.Scene) {
   // TODO: Add spheres where systems would be

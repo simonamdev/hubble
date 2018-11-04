@@ -44,6 +44,9 @@ const createScene = function(): BABYLON.Scene {
 
 const scene: BABYLON.Scene = createScene();
 
+// Run the optimiser to try and maintain a good FPS count
+BABYLON.SceneOptimizer.OptimizeAsync(scene);
+
 // Render loop
 engine.runRenderLoop(() => {
   scene.render();
