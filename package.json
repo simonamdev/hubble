@@ -10,5 +10,8 @@
     "typescript": "^3.1.6",
     "uglify-es": "^3.3.9",
     "uglify-js": "^3.4.9"
+  },
+  "scripts": {
+    "start": "node fuse.js"
   }
 }
