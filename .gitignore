@@ -2,3 +2,4 @@
 node_modules/
 .fusebox/
 dist/
+src/assets/systems/

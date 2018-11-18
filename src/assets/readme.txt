@@ -1,0 +1,1 @@
+# command to get systems within 100ly of Sol: https://www.edsm.net/api-v1/sphere-systems?systemName=Sol
