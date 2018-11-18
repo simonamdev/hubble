@@ -25,23 +25,6 @@ export interface System {
   coordsLocked: boolean;
 }
 
-export const addSystemsFromJson: (scene: BABYLON.Scene, systems: System[]) => void = function(
-  scene: BABYLON.Scene,
-  systems: System[]
-) {
-  // TODO: Deduplicate from other function
-  console.log(`Adding ${systems.length} systems from file`);
-  const sytemSphere: BABYLON.Mesh = BABYLON.Mesh.CreateSphere(
-    'system',
-    systemSegments,
-    systemDiameter,
-    scene,
-    false,
-    BABYLON.Mesh.FRONTSIDE
-  );
-  systems.forEach((system: System) => addSystem(sytemSphere, system.coords.x, system.coords.y, system.coords.z, scene));
-};
-
 export const parseJsonSystem: (jsonSystem: any) => System = function(jsonSystem: any) {
   // TODO: Find simpler method of deserialising
   const coords: Coords = { x: jsonSystem.coords.x, y: jsonSystem.coords.y, z: jsonSystem.coords.z };
@@ -56,9 +39,11 @@ export const parseJsonSystem: (jsonSystem: any) => System = function(jsonSystem:
   return system;
 };
 
-export const addSystems: (scene: BABYLON.Scene) => void = function(scene: BABYLON.Scene) {
-  // TODO: Add spheres where systems would be
-  // For now - random positions are sufficient
+export const addSystemsFromJson: (scene: BABYLON.Scene, systems: System[]) => void = function(
+  scene: BABYLON.Scene,
+  systems: System[]
+) {
+  console.log(`Adding ${systems.length} systems from file`);
   const sytemSphere: BABYLON.Mesh = BABYLON.Mesh.CreateSphere(
     'system',
     systemSegments,
@@ -67,38 +52,24 @@ export const addSystems: (scene: BABYLON.Scene) => void = function(scene: BABYLO
     false,
     BABYLON.Mesh.FRONTSIDE
   );
-  for (let i = 0; i < systemCount; i++) {
-    // Ref:
-    // https://programming.guide/random-point-within-circle.html
-    // To be circular, generate a random angle, then adjust X and Z to that angle
-    const angle: number = Math.random() * 2 * Math.PI;
-    const radius: number = galaxyMaxX * Math.sqrt(Math.random());
-    const randomX: number = radius * Math.cos(angle);
-    const randomZ: number = radius * Math.sin(angle);
-    const randomY: number = getRandInt(-galaxyMaxY, galaxyMaxY);
-    addSystem(sytemSphere, randomX, randomY, randomZ, scene);
-    console.log(`Added System ${i + 1}`);
-  }
+  systems.forEach((system: System) => addSystem(sytemSphere, system, scene));
+  // Hide the original mesh as it does not allow clicking on the first instance
+  sytemSphere.setEnabled(false);
 };
 
-const addSystem = function(mesh: BABYLON.Mesh, x: number, y: number, z: number, scene: BABYLON.Scene) {
-  const name: string = v4();
-  const newInstance: BABYLON.InstancedMesh = mesh.createInstance(name);
+const addSystem = function(mesh: BABYLON.Mesh, system: System, scene: BABYLON.Scene) {
+  const newInstance: BABYLON.InstancedMesh = mesh.createInstance(system.name);
   // Test out actions
   newInstance.actionManager = new BABYLON.ActionManager(scene);
   // Copied from example: https://doc.babylonjs.com/how_to/how_to_use_actions
-  newInstance.actionManager
-    .registerAction(
-      new BABYLON.InterpolateValueAction(BABYLON.ActionManager.OnPickTrigger, newInstance, 'visibility', 0.2, 1000)
-    )
-    .then(
-      new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnPickTrigger, () => {
-        console.log('Clicked!');
-      })
-    );
-  newInstance.position.x = x;
-  newInstance.position.y = y;
-  newInstance.position.z = z;
+  newInstance.actionManager.registerAction(
+    new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnPickTrigger, () => {
+      console.log(`Clicked on: ${system.name}`);
+    })
+  );
+  newInstance.position.x = system.coords.x;
+  newInstance.position.y = system.coords.y;
+  newInstance.position.z = system.coords.z;
   newInstance.freezeWorldMatrix();
 };
 
