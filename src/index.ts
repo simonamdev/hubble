@@ -1,8 +1,12 @@
 import * as BABYLON from 'babylonjs';
 import './styles/style.scss';
 
-import { addSystems } from './galaxy';
+import { addSystems, addSystemsFromJson, parseJsonSystem } from './galaxy';
 import { addExamplesToScene } from './example';
+
+// Test files
+// TODO: Do not package these as they will inflate the package size - they should be lazy loaded
+import * as jsonSystems from './assets/systems/systems-100ly.json';
 
 const canvasId: string = '3d-map-canvas';
 
@@ -29,7 +33,9 @@ const createScene = function(): BABYLON.Scene {
   const light: BABYLON.Light = new BABYLON.HemisphericLight('light1', new BABYLON.Vector3(0, 1, 0), scene);
 
   //   addExamplesToScene(scene);
-  addSystems(scene);
+  // addSystems(scene);
+  const systems: any[] = jsonSystems.map(jsonSystem => parseJsonSystem(jsonSystem));
+  addSystemsFromJson(scene, systems);
 
   return scene;
 };

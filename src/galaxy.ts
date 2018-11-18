@@ -1,5 +1,5 @@
 import { v4 } from 'uuid';
-import { Mesh } from 'babylonjs';
+import { Mesh, Scene } from 'babylonjs';
 
 // TODO: Adjust these to realistic numbers
 const galaxyMaxX: number = 100;
@@ -9,6 +9,42 @@ const galaxyMaxZ: number = 100;
 const systemCount: number = 10000;
 const systemSegments = 8;
 const systemDiameter: number = 1;
+
+export interface Coords {
+  x: number;
+  y: number;
+  z: number;
+}
+
+export interface System {
+  name: string;
+  id: number;
+  id64: number;
+  distance: number;
+  coords: Coords;
+  coordsLocked: boolean;
+}
+
+export const addSystemsFromJson: (scene: BABYLON.Scene, systems: System[]) => void = function(scene: BABYLON.Scene, systems: System[]) {
+  // TODO: Deduplicate from other function
+  console.log(`Adding ${systems.length} systems from file`);
+  const sytemSphere: BABYLON.Mesh = BABYLON.Mesh.CreateSphere('system', systemSegments, systemDiameter, scene, false, BABYLON.Mesh.FRONTSIDE);
+  systems.forEach((system: System) => addSystem(sytemSphere, system.coords.x, system.coords.y, system.coords.z, scene));
+};
+
+export const parseJsonSystem: (jsonSystem: any) => System = function(jsonSystem: any) {
+  // TODO: Find simpler method of deserialising
+  const coords: Coords = { x: jsonSystem.coords.x, y: jsonSystem.coords.y, z: jsonSystem.coords.z };
+  const system: System = {
+    coords: coords,
+    name: jsonSystem.name,
+    id: jsonSystem.id,
+    id64: jsonSystem.id64,
+    distance: jsonSystem.distance,
+    coordsLocked: jsonSystem.coordsLocked
+  };
+  return system;
+};
 
 export const addSystems: (scene: BABYLON.Scene) => void = function(scene: BABYLON.Scene) {
   // TODO: Add spheres where systems would be

@@ -6,8 +6,7 @@
     "importHelpers": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "types": [
-      "babylonjs"
-    ]
+    "types": ["babylonjs"],
+    "resolveJsonModule": true
   }
 }
