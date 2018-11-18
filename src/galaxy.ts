@@ -25,10 +25,20 @@ export interface System {
   coordsLocked: boolean;
 }
 
-export const addSystemsFromJson: (scene: BABYLON.Scene, systems: System[]) => void = function(scene: BABYLON.Scene, systems: System[]) {
+export const addSystemsFromJson: (scene: BABYLON.Scene, systems: System[]) => void = function(
+  scene: BABYLON.Scene,
+  systems: System[]
+) {
   // TODO: Deduplicate from other function
   console.log(`Adding ${systems.length} systems from file`);
-  const sytemSphere: BABYLON.Mesh = BABYLON.Mesh.CreateSphere('system', systemSegments, systemDiameter, scene, false, BABYLON.Mesh.FRONTSIDE);
+  const sytemSphere: BABYLON.Mesh = BABYLON.Mesh.CreateSphere(
+    'system',
+    systemSegments,
+    systemDiameter,
+    scene,
+    false,
+    BABYLON.Mesh.FRONTSIDE
+  );
   systems.forEach((system: System) => addSystem(sytemSphere, system.coords.x, system.coords.y, system.coords.z, scene));
 };
 
@@ -49,7 +59,14 @@ export const parseJsonSystem: (jsonSystem: any) => System = function(jsonSystem:
 export const addSystems: (scene: BABYLON.Scene) => void = function(scene: BABYLON.Scene) {
   // TODO: Add spheres where systems would be
   // For now - random positions are sufficient
-  const sytemSphere: BABYLON.Mesh = BABYLON.Mesh.CreateSphere('system', systemSegments, systemDiameter, scene, false, BABYLON.Mesh.FRONTSIDE);
+  const sytemSphere: BABYLON.Mesh = BABYLON.Mesh.CreateSphere(
+    'system',
+    systemSegments,
+    systemDiameter,
+    scene,
+    false,
+    BABYLON.Mesh.FRONTSIDE
+  );
   for (let i = 0; i < systemCount; i++) {
     // Ref:
     // https://programming.guide/random-point-within-circle.html
@@ -67,6 +84,18 @@ export const addSystems: (scene: BABYLON.Scene) => void = function(scene: BABYLO
 const addSystem = function(mesh: BABYLON.Mesh, x: number, y: number, z: number, scene: BABYLON.Scene) {
   const name: string = v4();
   const newInstance: BABYLON.InstancedMesh = mesh.createInstance(name);
+  // Test out actions
+  newInstance.actionManager = new BABYLON.ActionManager(scene);
+  // Copied from example: https://doc.babylonjs.com/how_to/how_to_use_actions
+  newInstance.actionManager
+    .registerAction(
+      new BABYLON.InterpolateValueAction(BABYLON.ActionManager.OnPickTrigger, newInstance, 'visibility', 0.2, 1000)
+    )
+    .then(
+      new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnPickTrigger, () => {
+        console.log('Clicked!');
+      })
+    );
   newInstance.position.x = x;
   newInstance.position.y = y;
   newInstance.position.z = z;
