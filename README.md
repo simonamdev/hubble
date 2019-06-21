@@ -5,6 +5,7 @@ Experiment to use TypeScript and BabylonJS to render a performant 3D scene of a 
 ## Instructions:
 
 `npm install`
+
 `node fuse.js`
 
 Access the dev server on localhost:4444
